@@ -1,0 +1,46 @@
+{
+    "name": "node-mysql-boilerplate",
+    "version": "1.0.0",
+    "description": "a modern node-mysql-boilerplate",
+    "main": "app.js",
+    "author": "Nick Benakis",
+    "license": "MIT",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app.js",
+        "dev": "nodemon app.js",
+        "format": "prettier \"**/*.{js,json}\" --write",
+        "lint": "eslint \"**/*.js\""
+    },
+    "dependencies": {
+        "ajv": "^5.5.2",
+        "bcrypt": "^1.0.3",
+        "bcryptjs": "*",
+        "body-parser": "*",
+        "bulma": "^0.8.0",
+        "chalk": "^3.0.0",
+        "cors": "*",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-status-monitor": "^1.2.7",
+        "jsonwebtoken": "^8.1.0",
+        "mysql": "^2.17.1",
+        "node-schedule": "^1.3.0",
+        "nodemailer": "^4.4.1",
+        "pm2": "^2.9.1"
+    },
+    "devDependencies": {
+        "eslint": "^6.1.0",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-node": "^4.0.0",
+        "eslint-config-prettier": "^6.8.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-react": "^7.17.0",
+        "eslint-plugin-react-hooks": "^1.7.0",
+        "nodemon": "^1.13.3",
+        "prettier": "^1.19.1"
+    }
+}
