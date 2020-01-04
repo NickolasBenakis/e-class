@@ -21,6 +21,7 @@
         "chalk": "^3.0.0",
         "cors": "*",
         "dotenv": "^8.2.0",
+        "ejs": "^3.0.1",
         "express": "^4.17.1",
         "express-status-monitor": "^1.2.7",
         "jsonwebtoken": "^8.1.0",
