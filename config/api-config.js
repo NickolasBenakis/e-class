@@ -87,7 +87,7 @@ app.post('/signup', async (req, res) => {
     try {
         let signupProcess = await authService.signup(req.body);
         console.log(signupProcess);
-        return res.status(200);
+        return res.status(200).send('OK');
     } catch (error) {
         console.log(error);
         return res.status(444).send(error.message);

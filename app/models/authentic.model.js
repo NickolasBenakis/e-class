@@ -51,7 +51,8 @@ function signup(user) {
                 }
                 user.password = hash;
                 db.query(
-                    "SELECT * FROM user WHERE username='" + user.username + "'",
+                    'SELECT * FROM user WHERE username= ?',
+                    user.username,
                     (error, rows, fields) => {
                         if (error) {
                             dbFunc.connectionRelease;
@@ -64,11 +65,8 @@ function signup(user) {
                             });
                         } else {
                             db.query(
-                                "INSERT INTO user(username,password)VALUES('" +
-                                    user.username +
-                                    "','" +
-                                    user.password +
-                                    "')",
+                                'INSERT INTO user(username,password,roleId)VALUES (?, ? , ?)',
+                                [user.username, user.password, user.roleId],
                                 (error, rows, fields) => {
                                     if (error) {
                                         dbFunc.connectionRelease;
