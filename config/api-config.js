@@ -9,9 +9,15 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var UserRoute = require('../app/routes/user.route');
 var AuthenticRoute = require('../app/routes/authentic.route');
+var models = require('../app/models/user-model');
+var authService = require('../app/services/authentic.service');
 var errorCode = require('../common/error-code');
 var errorMessage = require('../common/error-methods');
 var checkToken = require('./secureRoute');
+
+function pathFile(file) {
+    return path.join(process.cwd() + file);
+}
 
 // set ejs engine;
 app.set('view engine', 'ejs');
@@ -35,17 +41,17 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-
+//set static folders
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(pathFile('/node_modules/bootstrap/dist')));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var router = express.Router();
 app.use('/api', router);
 AuthenticRoute.init(router);
 
 var secureApi = express.Router();
-
-//set static folder
-app.use(express.static(path.join(__dirname, 'public')));
 
 //body parser middleware
 
@@ -56,13 +62,39 @@ app.use(function(err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
-app.use(express.static(process.cwd() + '/node_modules/bootstrap/dist'));
 
 // index route
-let data = 'hey ho';
+let errorCredentials = '';
 app.get('/', (req, res) => {
-    //res.sendFile(path.join(process.cwd() + '/app/views/login.ejs'));
-    res.render(path.join(process.cwd() + '/app/views/login.ejs'), { data: data });
+    res.render(pathFile('/app/views/login.ejs'), {
+        errorCredentials: errorCredentials,
+    });
+});
+
+app.post('/login', async (req, res) => {
+    let user = await models.getUserById(req.body.username, req.body.password);
+    if (!user.length || user === undefined || user === null) {
+        errorCredentials = 'Unavailable username';
+        res.redirect('/');
+    } else {
+        errorCredentials = '';
+        res.redirect('/dashboard');
+    }
+});
+
+app.post('/signup', async (req, res) => {
+    try {
+        let signupProcess = await authService.signup(req.body);
+        console.log(signupProcess);
+        return res.status(200);
+    } catch (error) {
+        console.log(error);
+        return res.status(444).send(error.message);
+    }
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render(pathFile('/app/views/dashboard.ejs'));
 });
 
 var ApiConfig = {

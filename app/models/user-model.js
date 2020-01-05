@@ -9,23 +9,23 @@ var userModel = {
     getUserById: getUserById,
 };
 
+// function getAllUser() {
+//     return new Promise((resolve, reject) => {
+//         db.query(`CALL get_user()`, (error, rows, fields) => {
+//             if (!!error) {
+//                 dbFunc.connectionRelease;
+//                 reject(error);
+//             } else {
+//                 dbFunc.connectionRelease;
+//                 resolve(rows[0]);
+//             }
+//         });
+//     });
+// }
+
 function getAllUser() {
     return new Promise((resolve, reject) => {
-        db.query(`CALL get_user()`, (error, rows, fields) => {
-            if (!!error) {
-                dbFunc.connectionRelease;
-                reject(error);
-            } else {
-                dbFunc.connectionRelease;
-                resolve(rows[0]);
-            }
-        });
-    });
-}
-
-function getUserById(id) {
-    return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM test WHERE id =' + id.id, (error, rows, fields) => {
+        db.query(`SELECT * FROM user`, (error, rows, fields) => {
             if (!!error) {
                 dbFunc.connectionRelease;
                 reject(error);
@@ -34,6 +34,24 @@ function getUserById(id) {
                 resolve(rows);
             }
         });
+    });
+}
+
+function getUserById(username, password) {
+    return new Promise((resolve, reject) => {
+        db.query(
+            `SELECT * FROM user WHERE username = ? AND password = ? `,
+            [username, password],
+            (error, rows, fields) => {
+                if (!!error) {
+                    dbFunc.connectionRelease;
+                    reject(error);
+                } else {
+                    dbFunc.connectionRelease;
+                    resolve(rows);
+                }
+            }
+        );
     });
 }
 

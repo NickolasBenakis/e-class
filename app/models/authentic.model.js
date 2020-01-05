@@ -37,11 +37,11 @@ function signup(user) {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(10, function(err, salt) {
             if (err) {
-                return next(err);
+                return err;
             }
             bcrypt.hash(user.password, salt, function(err, hash) {
                 if (err) {
-                    return next(err);
+                    return err;
                 }
                 user.password = hash;
                 db.query(
