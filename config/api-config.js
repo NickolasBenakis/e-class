@@ -9,7 +9,6 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var UserRoute = require('../app/routes/user.route');
 var AuthenticRoute = require('../app/routes/authentic.route');
-var models = require('../app/models/user-model');
 var authService = require('../app/services/authentic.service');
 var errorCode = require('../common/error-code');
 var errorMessage = require('../common/error-methods');
@@ -64,21 +63,23 @@ app.use(function(err, req, res, next) {
 });
 
 // index route
-let errorCredentials = '';
+let errorState = {
+    message: '',
+};
 app.get('/', (req, res) => {
     res.render(pathFile('/app/views/login.ejs'), {
-        errorCredentials: errorCredentials,
+        errorCredentials: errorState.message,
     });
 });
 
 app.post('/login', async (req, res) => {
-    let user = await models.getUserById(req.body.username, req.body.password);
-    if (!user.length || user === undefined || user === null) {
-        errorCredentials = 'Unavailable username';
-        res.redirect('/');
-    } else {
-        errorCredentials = '';
+    try {
+        let loginRes = await authService.authentic(req.body);
+        console.log(loginRes);
         res.redirect('/dashboard');
+    } catch (error) {
+        errorState.message = error.message;
+        res.redirect('/');
     }
 });
 

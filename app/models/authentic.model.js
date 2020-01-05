@@ -10,9 +10,15 @@ var authenticModel = {
 function authentic(authenticData) {
     return new Promise((resolve, reject) => {
         db.query(
-            `SELECT * FROM user WHERE username ='${authenticData.username}'`,
+            'SELECT * FROM user WHERE username = ?',
+            authenticData.username,
             (error, rows, fields) => {
                 if (error) {
+                    reject(error);
+                } else if (!rows.length) {
+                    let error = {
+                        message: 'Invalid username',
+                    };
                     reject(error);
                 } else {
                     bcrypt.compare(authenticData.password, rows[0].password, function(
@@ -24,7 +30,7 @@ function authentic(authenticData) {
                         } else if (isMatch) {
                             resolve(rows);
                         } else {
-                            reject({ success: false, message: 'password doesnot match' });
+                            reject({ success: false, message: 'wrong credentials' });
                         }
                     });
                 }
