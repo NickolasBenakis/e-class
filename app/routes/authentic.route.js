@@ -43,9 +43,9 @@ const loginWithAuth = async (req, res) => {
 
             switch (roleId) {
                 case 1:
-                    res.redirect('/api/dashboard/student');
+                    res.redirect('/secureApi/dashboard/student');
                 case 2:
-                    res.redirect('/api/dashboard/teacher');
+                    res.redirect('/secureApi/dashboard/teacher');
                 default:
                     res.status(404).send('No role specified');
             }

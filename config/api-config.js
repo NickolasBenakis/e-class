@@ -40,13 +40,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // use sub routers
-var router = express.Router();
-app.use('/api', router);
-AuthenticRoute.init(router);
-DashboardRoute.init(router);
+// var router = express.Router();
+// app.use('/api', router);
+// AuthenticRoute.init(router);
+// DashboardRoute.init(router);
 
 var secureApi = express.Router();
 app.use('/secureApi', secureApi);
+AuthenticRoute.init(secureApi);
+DashboardRoute.init(secureApi);
 secureApi.use(checkToken);
 
 app.use(function(err, req, res, next) {
@@ -57,7 +59,5 @@ app.use(function(err, req, res, next) {
 var ApiConfig = {
     app: app,
 };
-
-UserRoute.init(secureApi);
 
 module.exports = ApiConfig;

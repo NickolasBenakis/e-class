@@ -1,4 +1,6 @@
 const studentService = require('../services/student.service');
+const teacherService = require('../services/teacher.service');
+
 var schema = require('../schema/loginValidationSchema.json');
 var userSchema = require('../schema/userValidationSchema.json');
 var iValidator = require('../../common/iValidator');
@@ -6,7 +8,7 @@ var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
 var mail = require('./../../common/mailer.js');
 const pathFile = require('../../config/pathFile');
-const jwt = require('jsonwebtoken');
+const decodeToken = require('../../common/decodeToken');
 
 function init(router) {
     // student route
@@ -14,15 +16,12 @@ function init(router) {
     // teacher route
     router
         .route('/dashboard/teacher')
-        .get(getAllLessons)
+        .get(getAllStudents)
         .post(addGrade);
 }
 
 const getAllLessons = async (req, res) => {
-    let token = req.headers && req.headers.cookie;
-    token = token.replace('token=', '');
-
-    const { username } = jwt.decode(token);
+    const username = decodeToken(req);
 
     try {
         let lessons = await studentService.getAllLessons(username);
@@ -43,6 +42,16 @@ const getAllLessons = async (req, res) => {
     }
 };
 
+const getAllStudents = async (req, res) => {
+    const teacher_name = decodeToken(req);
+
+    try {
+        const lesson = await teacherService.getTeacherLesson(teacher_name);
+        console.log(lesson);
+    } catch (error) {
+        console.log(error);
+    }
+};
 const addGrade = (req, res) => {};
 
 module.exports.init = init;
