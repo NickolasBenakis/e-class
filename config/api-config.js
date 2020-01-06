@@ -12,6 +12,7 @@ const dbfunc = require('./db-function');
 const bodyParser = require('body-parser');
 const UserRoute = require('../app/routes/user.route');
 const AuthenticRoute = require('../app/routes/authentic.route');
+const DashboardRoute = require('../app/routes/dashboard.route');
 const authService = require('../app/services/authentic.service');
 const checkToken = require('./secureRoute');
 
@@ -42,6 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var router = express.Router();
 app.use('/api', router);
 AuthenticRoute.init(router);
+DashboardRoute.init(router);
 
 var secureApi = express.Router();
 app.use('/secureApi', secureApi);

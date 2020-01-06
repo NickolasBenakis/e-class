@@ -6,14 +6,14 @@ var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
 var mail = require('./../../common/mailer.js');
 const pathFile = require('../../config/pathFile');
-
 const jwt = require('jsonwebtoken');
 
 function init(router) {
-    router.route('/login').get(indexPage);
-    router.route('/login').post(loginWithAuth);
+    router
+        .route('/login')
+        .get(indexPage)
+        .post(loginWithAuth);
     router.route('/signup').post(signup);
-    router.route('/dashboard').get(dashboardPage);
 }
 
 const indexPage = (req, res) => {
@@ -24,6 +24,7 @@ const indexPage = (req, res) => {
 
 const loginWithAuth = async (req, res) => {
     var authenticData = req.body;
+
     //Validating the input entity
     var json_format = iValidator.json_schema(schema.postSchema, authenticData, 'authentic');
     if (json_format.valid == false) {
@@ -32,10 +33,14 @@ const loginWithAuth = async (req, res) => {
     try {
         const data = await authenticService.authentic(authenticData);
         if (data) {
-            var username = data.username;
+            var username = data[0].username;
             const token = jwt.sign({ username }, 'my_secret_key', { expiresIn: 60 * 60 * 24 });
-            console.log(token);
-            res.redirect('/dashboard');
+            res.cookie('token', token, {
+                httpOnly: true,
+                // secure: true // - for secure, https only cookie
+            });
+
+            res.redirect('/api/dashboard');
         }
     } catch (error) {
         res.render(pathFile('/app/views/login.ejs'), {
@@ -61,10 +66,6 @@ const signup = async (req, res) => {
     } catch (error) {
         res.status(444).send(error.message);
     }
-};
-
-const dashboardPage = (req, res) => {
-    res.render(pathFile('/app/views/dashboard.ejs'));
 };
 
 module.exports.init = init;

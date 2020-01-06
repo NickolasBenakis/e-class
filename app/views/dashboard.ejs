@@ -18,15 +18,44 @@
             margin: 50px auto;
             width: 350px;
         }
+
+        table {
+            margin: 50px auto;
+        }
     </style>
 </head>
 
 <body>
     <section>
         <main>
+            <h1 class="title card-footer-item">welcome to your e-class</h1>
+            <h3 class="title card-footer-item">Lessons</h3>
         </main>
         <main class="form__container container">
-            <div>Dashboard</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><abbr title="No">No</abbr></th>
+                        <th><abbr title="Name">Name</abbr></th>
+                        <th><abbr title="Semester">Semester</abbr></th>
+                        <th><abbr title="Grade">Grade</abbr></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <% for(var i = 0; i < lessons.length; i++) { %>
+                    <tr>
+                        <th><%= i+1 %></th>
+                        <td><%= lessons[i].name %></td>
+                        <td><%= lessons[i].semester %></td>
+                        <td><%= lessons[i].grade %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </main>
     </section>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
