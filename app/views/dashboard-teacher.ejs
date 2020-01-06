@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.0/css/bulma.css.map">
+    <style>
+        .form__container {
+            display: block;
+            width: 100%;
+        }
+
+        .form {
+            margin: 50px auto;
+            width: 350px;
+        }
+
+        table {
+            margin: 50px auto;
+
+        }
+
+        tr:hover {
+            background-color: whitesmoke;
+            cursor: pointer;
+        }
+
+        input[type="number"] {
+            width: 55px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <main>
+            <h1 class="title card-footer-item">welcome to e-class <%=teacher_name %></h1>
+            <h3 class="title card-footer-item">Students & Grades</h3>
+        </main>
+        <main class="form__container container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><abbr title="No">No</abbr></th>
+                        <th><abbr title="Name">Name</abbr></th>
+                        <th><abbr title="Semester">Semester</abbr></th>
+                        <th><abbr title="Grade">Grade</abbr></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <% for(var i = 0; i < students.length; i++) { %>
+                    <tr>
+                        <th><%= i+1 %></th>
+                        <td><%= students[i].student_name %></td>
+                        <td><%= students[i].semester %></td>
+                        <td>
+                            <% if (students[i].grade === null || !students[i].grade) { %>
+                            <form action="/secureApi/dashboard/teacher" method="POST">
+                                <input type="text" class="is-hidden" name="student_name"
+                                    value="<%= students[i].student_name %>" />
+                                <input type="number" name="grade" class="input" min="0" max="10" />
+                                <input type="submit" class="button is-primary" value="Add" />
+                            </form>
+                            <% } else { %>
+                            <%= students[i].grade %>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </main>
+    </section>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+        if (window && window.document) {
+            // window.document.addEventListener('load', function () {
+            //     var btn = document.getElementById('add-grade');
+            //     btn.addEventListener('click', function () {
+            // fetch('http://localhost:9890/dashboard/teacher/', {
+            //         method: 'POST',
+            //         credentials: 'include',
+            //         body: 5
+            //     })
+            //     .then((response) => {
+            //         return response.json();
+            //     }).then(data => console.log(data));
+            //     });
+            // })
+
+            function addGrade() {
+                return fetch('http://localhost:9890/dashboard/teacher', {
+                        method: 'POST',
+                        credentials: 'include',
+                        body: 5
+                    })
+                    .then((response) => {
+                        return response.json();
+                    }).then(data => console.log(data));
+            }
+        }
+    </script>
+</body>
+
+</html>

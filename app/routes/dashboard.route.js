@@ -34,7 +34,7 @@ const getAllLessons = async (req, res) => {
             };
         });
         console.log(lessons);
-        res.render(pathFile('/app/views/dashboard.ejs'), {
+        res.render(pathFile('/app/views/dashboard-student.ejs'), {
             lessons: lessons,
         });
     } catch (error) {
@@ -46,12 +46,38 @@ const getAllStudents = async (req, res) => {
     const teacher_name = decodeToken(req);
 
     try {
-        const lesson = await teacherService.getTeacherLesson(teacher_name);
-        console.log(lesson);
+        const [{ name }] = await teacherService.getTeacherLesson(teacher_name);
+        if (name) {
+            let students = await teacherService.getAllStudentsPerLesson(name);
+            students = students.map(lesson => {
+                return {
+                    lesson_name: lesson.name,
+                    semester: lesson.semester,
+                    grade: lesson.grade,
+                    student_name: lesson.student_name,
+                };
+            });
+            res.render(pathFile('/app/views/dashboard-teacher.ejs'), {
+                teacher_name: teacher_name,
+                students: students,
+            });
+            console.log(students);
+        }
     } catch (error) {
         console.log(error);
     }
 };
-const addGrade = (req, res) => {};
+
+const addGrade = async (req, res) => {
+    const { grade, student_name } = req.body;
+
+    try {
+        const data = await teacherService.addGrade(student_name, grade);
+        console.log('TI PIRA??', data);
+        res.redirect('teacher');
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 module.exports.init = init;
