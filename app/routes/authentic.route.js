@@ -47,7 +47,7 @@ const loginWithAuth = async (req, res) => {
                 case 2:
                     res.redirect('/api/dashboard/teacher');
                 default:
-                    res.redirect('/api/dashboard/student');
+                    res.status(404).send('No role specified');
             }
         }
     } catch (error) {
