@@ -9,8 +9,11 @@ const pathFile = require('../../config/pathFile');
 const jwt = require('jsonwebtoken');
 
 function init(router) {
+    // student route
+    router.route('/dashboard/student').get(getAllLessons);
+    // teacher route
     router
-        .route('/dashboard')
+        .route('/dashboard/teacher')
         .get(getAllLessons)
         .post(addGrade);
 }

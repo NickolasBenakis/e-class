@@ -33,14 +33,22 @@ const loginWithAuth = async (req, res) => {
     try {
         const data = await authenticService.authentic(authenticData);
         if (data) {
-            var username = data[0].username;
+            const roleId = data[0].roleId;
+            const username = data[0].username;
             const token = jwt.sign({ username }, 'my_secret_key', { expiresIn: 60 * 60 * 24 });
             res.cookie('token', token, {
                 httpOnly: true,
                 // secure: true // - for secure, https only cookie
             });
 
-            res.redirect('/api/dashboard');
+            switch (roleId) {
+                case 1:
+                    res.redirect('/api/dashboard/student');
+                case 2:
+                    res.redirect('/api/dashboard/teacher');
+                default:
+                    res.redirect('/api/dashboard/student');
+            }
         }
     } catch (error) {
         res.render(pathFile('/app/views/login.ejs'), {
