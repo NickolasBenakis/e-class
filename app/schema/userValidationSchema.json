@@ -8,29 +8,24 @@
             }
         }
     },
-    "postSchema": {
+    "signUpSchema": {
         "type": "object",
-        "required": ["name"],
+        "required": ["username", "password", "roleId"],
         "properties": {
-            "name": {
+            "username": {
                 "type": "string",
                 "minLength": 1,
-                "maxLength": 10
+                "maxLength": 45
             },
-            "age": {
-                "type": "integer",
+            "password": {
+                "type": "string",
                 "minimum": 1,
-                "maximum": 150
+                "maximum": 45
             },
-            "state": {
-                "type": "string",
+            "roleId": {
+                "type": "integer",
                 "minLength": 1,
-                "maxLength": 10
-            },
-            "country": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 10
+                "maxLength": 5
             }
         }
     }

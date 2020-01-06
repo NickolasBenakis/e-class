@@ -7,17 +7,13 @@ const jwt = require('jsonwebtoken');
 //var http = require('http');
 // var errorCode = require('../common/error-code');
 // var errorMessage = require('../common/error-methods');
-
+const pathFile = require('./pathFile');
 const dbfunc = require('./db-function');
 const bodyParser = require('body-parser');
 const UserRoute = require('../app/routes/user.route');
 const AuthenticRoute = require('../app/routes/authentic.route');
 const authService = require('../app/services/authentic.service');
 const checkToken = require('./secureRoute');
-
-function pathFile(file) {
-    return path.join(process.cwd() + file);
-}
 
 // set ejs engine;
 app.set('view engine', 'ejs');
@@ -54,40 +50,6 @@ secureApi.use(checkToken);
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
-});
-
-// index login route
-app.get('/login', (req, res) => {
-    res.render(pathFile('/app/views/login.ejs'), {
-        errorCredentials: '',
-    });
-});
-
-app.post('/login', async (req, res) => {
-    try {
-        let loginRes = await authService.authentic(req.body);
-        console.log(loginRes);
-        res.redirect('/dashboard');
-    } catch (error) {
-        res.render(pathFile('/app/views/login.ejs'), {
-            errorCredentials: error.message,
-        });
-    }
-});
-
-app.post('/signup', async (req, res) => {
-    try {
-        let signupProcess = await authService.signup(req.body);
-        console.log(signupProcess);
-        return res.status(200).send('OK');
-    } catch (error) {
-        console.log(error);
-        return res.status(444).send(error.message);
-    }
-});
-
-app.get('/dashboard', (req, res) => {
-    res.render(pathFile('/app/views/dashboard.ejs'));
 });
 
 var ApiConfig = {

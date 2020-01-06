@@ -1,68 +1,70 @@
 const authenticService = require('../services/authentic.service');
 var schema = require('../schema/loginValidationSchema.json');
+var userSchema = require('../schema/userValidationSchema.json');
 var iValidator = require('../../common/iValidator');
 var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
 var mail = require('./../../common/mailer.js');
+const pathFile = require('../../config/pathFile');
 
 const jwt = require('jsonwebtoken');
 
 function init(router) {
-    router.route('/login').post(authentic);
+    router.route('/login').get(indexPage);
+    router.route('/login').post(loginWithAuth);
     router.route('/signup').post(signup);
+    router.route('/dashboard').get(dashboardPage);
 }
 
-function authentic(req, res) {
-    var authenticData = req.body;
+const indexPage = (req, res) => {
+    res.render(pathFile('/app/views/login.ejs'), {
+        errorCredentials: '',
+    });
+};
 
+const loginWithAuth = async (req, res) => {
+    var authenticData = req.body;
     //Validating the input entity
     var json_format = iValidator.json_schema(schema.postSchema, authenticData, 'authentic');
     if (json_format.valid == false) {
         return res.status(422).send(json_format.errorMessage);
     }
-
-    authenticService
-        .authentic(authenticData)
-        .then(data => {
-            if (data) {
-                var username = data.username;
-                const token = jwt.sign({ username }, 'my_secret_key', { expiresIn: 60 * 60 * 24 });
-                res.json({
-                    success: true,
-                    data: data,
-                    token: token,
-                });
-            }
-        })
-        .catch(err => {
-            mail.mail(err);
-            res.json(err);
+    try {
+        const data = await authenticService.authentic(authenticData);
+        if (data) {
+            var username = data.username;
+            const token = jwt.sign({ username }, 'my_secret_key', { expiresIn: 60 * 60 * 24 });
+            console.log(token);
+            res.redirect('/dashboard');
+        }
+    } catch (error) {
+        res.render(pathFile('/app/views/login.ejs'), {
+            errorCredentials: error.message,
         });
-}
+    }
+};
 
-function signup(req, res) {
+const signup = async (req, res) => {
     var signUpData = req.body;
 
     //Validating the input entity
-    var json_format = iValidator.json_schema(schema.postSchema, signUpData, 'signUpData');
+    var json_format = iValidator.json_schema(userSchema.signUpSchema, signUpData, 'signUpData');
     if (json_format.valid == false) {
         return res.status(422).send(json_format.errorMessage);
     }
 
-    authenticService
-        .signup(signUpData)
-        .then(data => {
-            if (data) {
-                res.json({
-                    success: true,
-                    data: data,
-                });
-            }
-        })
-        .catch(err => {
-            mail.mail(err);
-            res.json(err);
-        });
-}
+    try {
+        const data = await authenticService.signup(signUpData);
+        if (data) {
+            res.status(200).send('OK');
+        }
+    } catch (error) {
+        res.status(444).send(error.message);
+    }
+};
+
+const dashboardPage = (req, res) => {
+    res.render(pathFile('/app/views/dashboard.ejs'));
+};
 
 module.exports.init = init;
