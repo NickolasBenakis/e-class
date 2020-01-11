@@ -2,7 +2,7 @@
 
 # e-class secure application
 
-A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication.
+A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication. Deployed in Heroku PaaS https://nben-eclass-unipi.herokuapp.com/api/login
 
 # Story Journey
 
