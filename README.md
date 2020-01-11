@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # e-class secure application
 
 A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication.
@@ -30,7 +32,7 @@ This Application has a basic CRUD operation with MySQL, authetication of API end
 
 ---
 
-# Table Creation In DB
+# Schema Creation In DB
 
 1. Create the db schema. Details can be found in sql-scripts at [here](https://github.com/NickolasBenakis/e-class/tree/master/documents/sql-script/ExportPatsakis).
 2. you can also try creating your own db, schema and tables as well just need to change query and table name in model section.
