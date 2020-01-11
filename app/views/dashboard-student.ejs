@@ -22,6 +22,18 @@
         table {
             margin: 50px auto;
         }
+        .log-out-form {
+            font-size: 14px;
+            display: block;
+            margin: 0 auto;
+            width: 350px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        .log-out-btn {
+            margin: 0 auto;
+            display: block;
+        }
     </style>
 </head>
 
@@ -56,6 +68,10 @@
                     <% } %>
                 </tbody>
             </table>
+            <form method="POST" action="/api/signOut" class="log-out-form">
+                <p class="title card-footer-item">Sign out</p>
+                <input type="submit" class="log-out-btn button is-warning" value="Log out"/>
+            </form>
         </main>
     </section>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>

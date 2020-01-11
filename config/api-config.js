@@ -15,6 +15,7 @@ const AuthenticRoute = require('../app/routes/authentic.route');
 const DashboardRoute = require('../app/routes/dashboard.route');
 const authService = require('../app/services/authentic.service');
 const checkToken = require('./secureRoute');
+const grabToken = require('../common/grabToken');
 
 // set ejs engine;
 app.set('view engine', 'ejs');
@@ -48,7 +49,7 @@ AuthenticRoute.init(authRouter);
 
 // token check for dashboard students or teacher
 var secureApi = express.Router();
-app.use('/secureApi',checkToken, secureApi);
+app.use('/secureApi',[checkToken, roleIdCheck], secureApi);
 DashboardRoute.init(secureApi);
 
 
@@ -61,4 +62,29 @@ var ApiConfig = {
     app: app,
 };
 
+function roleIdCheck(req,res,next) {
+    console.log("hello");
+    next();
+}
+
+// function loginRedirector(req, res, next) {
+//     const token = grabToken(req);
+//     jwt.verify(token, 'my_secret_key', (err, decode) => {
+//         if (err) {
+//             next();
+//         } else {
+            
+//             console.log(req.path)
+//             switch(req.path){
+//                 case "/dashboard/student":
+//                 case "/dashboard/teacher":
+//                     res.redirect(req.path);
+//                     break;
+//                 default:
+//                     next();
+//                     break;
+//             }
+//         }
+//     });
+// }
 module.exports = ApiConfig;

@@ -11,7 +11,7 @@
         "dev": "nodemon app.js",
         "format": "prettier \"**/*.{js,json}\" --write",
         "lint": "eslint \"**/*.js\"",
-        "debug": "node --nolazy --inspect-brk=9229 app.js"
+        "debug": "node --nolazy --inspect  app.js"
     },
     "dependencies": {
         "ajv": "^5.5.2",

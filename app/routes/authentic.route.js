@@ -12,14 +12,27 @@ function init(router) {
         .route('/login')
         .get(indexPage)
         .post(loginWithAuth);
-    router.route('/signup').post(signup);
+    router
+        .route('/signup').post(signup);
+    router
+        .route('/signOut').post(signOut);
 }
 
 const indexPage = (req, res) => {
+    res.cookie('token', req.cookie,{ maxAge: Date.now()});
+    res.clearCookie('token');
     res.render(pathFile('/app/views/login.ejs'), {
         errorCredentials: '',
     });
 };
+
+
+
+const signOut = (req,res) => {
+    res.cookie('token', req.cookie,{ maxAge: Date.now()});
+    res.clearCookie('token');
+    res.redirect('/api/login');
+}
 
 const loginWithAuth = async (req, res) => {
     var authenticData = req.body;
@@ -41,6 +54,7 @@ const loginWithAuth = async (req, res) => {
                 secure: false
                 // secure: true // - for secure, https only cookie
             });
+            
 
             switch (roleId) {
                 case 1:

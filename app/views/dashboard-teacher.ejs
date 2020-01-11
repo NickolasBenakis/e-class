@@ -32,6 +32,18 @@
         input[type="number"] {
             width: 55px;
         }
+        .log-out-form {
+            font-size: 14px;
+            display: block;
+            margin: 0 auto;
+            width: 350px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        .log-out-btn {
+            margin: 0 auto;
+            display: block;
+        }
     </style>
 </head>
 
@@ -49,6 +61,7 @@
                         <th><abbr title="Name">Name</abbr></th>
                         <th><abbr title="Semester">Semester</abbr></th>
                         <th><abbr title="Grade">Grade</abbr></th>
+                        <th><abbr title="EditGrade">Edit Grade</abbr></th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -61,52 +74,53 @@
                         <th><%= i+1 %></th>
                         <td><%= students[i].student_name %></td>
                         <td><%= students[i].semester %></td>
+                        <td><%= students[i].grade %></td>
                         <td>
-                            <% if (students[i].grade === null || !students[i].grade) { %>
                             <form action="/secureApi/dashboard/teacher" method="POST">
                                 <input type="text" class="is-hidden" name="student_name"
                                     value="<%= students[i].student_name %>" />
-                                <input type="number" name="grade" class="input" min="0" max="10" />
+                                <input
+                                    id="<%= i %>"
+                                    type="number" 
+                                    name="grade" 
+                                    class="input" 
+                                    min="0" 
+                                    max="10" 
+                                    onblur="validateNumber(this)" />
                                 <input type="submit" class="button is-primary" value="Add" />
                             </form>
-                            <% } else { %>
-                            <%= students[i].grade %>
-                            <% } %>
+                            <p id="warning-msg-<%= i %>" class="is-hidden">
+                                <small 
+                                    style="float:left;" 
+                                    class="help is-danger">
+                                    choose 0 between 10!
+                                </small>
+                            </p>
                         </td>
                     </tr>
                     <% } %>
                 </tbody>
             </table>
+            <form method="POST" action="/api/signOut" class="log-out-form">
+                <p class="title card-footer-item">Sign out</p>
+                <input type="submit" class="log-out-btn button is-warning" value="Log out"/>
+            </form>
         </main>
     </section>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
-        if (window && window.document) {
-            // window.document.addEventListener('load', function () {
-            //     var btn = document.getElementById('add-grade');
-            //     btn.addEventListener('click', function () {
-            // fetch('http://localhost:9890/dashboard/teacher/', {
-            //         method: 'POST',
-            //         credentials: 'include',
-            //         body: 5
-            //     })
-            //     .then((response) => {
-            //         return response.json();
-            //     }).then(data => console.log(data));
-            //     });
-            // })
-
-            function addGrade() {
-                return fetch('http://localhost:9890/dashboard/teacher', {
-                        method: 'POST',
-                        credentials: 'include',
-                        body: 5
-                    })
-                    .then((response) => {
-                        return response.json();
-                    }).then(data => console.log(data));
+            function validateNumber(e) {
+                var grade = e.value;
+                var id = e.id;
+                var elName = `warning-msg-${id}`;
+                var warningMsg = document.getElementById(elName);
+                if (grade > 10 || grade < 0){
+                    warningMsg.classList.remove('is-hidden');
+                } else {
+                    warningMsg.classList.add('is-hidden');
+                }
             }
-        }
+
     </script>
 </body>
 

@@ -19,23 +19,30 @@ function init(router) {
         .post(addGrade);
 }
 
-const getAllLessons = async (req, res) => {
+
+const getAllLessons = async (req, res, next) => {
     const username = decodeToken(req);
 
     try {
         let lessons = await studentService.getAllLessons(username);
-        lessons = lessons.map(el => {
-            return {
-                name: el.name,
-                semester: el.semester,
-                student_name: el.student_name,
-                grade: el.grade,
-            };
-        });
-        console.log(lessons);
-        res.render(pathFile('/app/views/dashboard-student.ejs'), {
-            lessons: lessons,
-        });
+        if (lessons.length){
+            lessons = lessons.map(el => {
+                return {
+                    name: el.name,
+                    semester: el.semester,
+                    student_name: el.student_name,
+                    grade: el.grade,
+                };
+            });
+            res.render(pathFile('/app/views/dashboard-student.ejs'), {
+                lessons: lessons,
+            });
+        } else {
+            res.json({
+                status: 403,
+                message: "Invalid Role Access"
+            })
+        }
     } catch (error) {
         console.log(error);
     }
@@ -45,7 +52,9 @@ const getAllStudents = async (req, res) => {
     const teacher_name = decodeToken(req);
 
     try {
-        const [{ name }] = await teacherService.getTeacherLesson(teacher_name);
+        const data = await teacherService.getTeacherLesson(teacher_name);
+        console.log(data);
+        const name = data && data.length && data[0].name;
         if (name) {
             let students = await teacherService.getAllStudentsPerLesson(name);
             students = students.map(lesson => {
@@ -61,15 +70,25 @@ const getAllStudents = async (req, res) => {
                 students: students,
             });
             console.log(students);
+        } else {
+            res.json({
+                status: 403,
+                message: "Invalid Role Access"
+            })
+            return;
         }
     } catch (error) {
         console.log(error);
     }
 };
 
-const addGrade = async (req, res) => {
+const addGrade = async (req, res, next) => {
     const { grade, student_name } = req.body;
 
+    if (grade >10 || grade <0){
+        res.send("wrong grade input! ");
+        return;
+    }
     try {
         const data = await teacherService.addGrade(student_name, grade);
         console.log('TI PIRA??', data);
