@@ -1,7 +1,7 @@
 {
-    "name": "node-mysql-boilerplate",
+    "name": "e-class",
     "version": "1.0.0",
-    "description": "a modern node-mysql-boilerplate",
+    "description": "e-class",
     "main": "app.js",
     "author": "Nick Benakis",
     "license": "MIT",
