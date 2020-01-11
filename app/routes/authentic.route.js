@@ -4,7 +4,6 @@ var userSchema = require('../schema/userValidationSchema.json');
 var iValidator = require('../../common/iValidator');
 var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
-var mail = require('./../../common/mailer.js');
 const pathFile = require('../../config/pathFile');
 const jwt = require('jsonwebtoken');
 
@@ -37,7 +36,9 @@ const loginWithAuth = async (req, res) => {
             const username = data[0].username;
             const token = jwt.sign({ username }, 'my_secret_key', { expiresIn: 60 * 60 * 24 });
             res.cookie('token', token, {
+                expires: new Date(Date.now() + 604800000),
                 httpOnly: true,
+                secure: false
                 // secure: true // - for secure, https only cookie
             });
 

@@ -40,16 +40,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // use sub routers
-// var router = express.Router();
-// app.use('/api', router);
-// AuthenticRoute.init(router);
-// DashboardRoute.init(router);
+// no token check for login, signup
+var authRouter = express.Router();
+app.use('/api', authRouter);
+AuthenticRoute.init(authRouter);
 
+
+// token check for dashboard students or teacher
 var secureApi = express.Router();
-app.use('/secureApi', secureApi);
-AuthenticRoute.init(secureApi);
+app.use('/secureApi',checkToken, secureApi);
 DashboardRoute.init(secureApi);
-secureApi.use(checkToken);
+
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);

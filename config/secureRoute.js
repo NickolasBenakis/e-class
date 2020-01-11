@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function checkToken(req, res, next) {
-    //var token = req.headers['token'];
+
     let token = req.headers && req.headers.cookie;
-    token = token.replace('token=', '');
     if (token) {
+        token = token.replace('token=', '');
         jwt.verify(token, 'my_secret_key', (err, decode) => {
             if (err) {
                 res.json({ status: 500, message: 'INVALID TOKEN', error: err.message });
@@ -16,7 +16,7 @@ module.exports = function checkToken(req, res, next) {
         res.json({
             status: 500,
             message: 'NO TOKEN PROVIDE',
-            error: 'token must be provide in header for endpoint access',
+            error: 'token must be provide for endpoint access',
         });
     }
 };

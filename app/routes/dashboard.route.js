@@ -6,7 +6,6 @@ var userSchema = require('../schema/userValidationSchema.json');
 var iValidator = require('../../common/iValidator');
 var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
-var mail = require('./../../common/mailer.js');
 const pathFile = require('../../config/pathFile');
 const decodeToken = require('../../common/decodeToken');
 

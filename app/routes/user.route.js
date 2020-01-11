@@ -3,7 +3,6 @@ var schema = require('../schema/userValidationSchema.json');
 var iValidator = require('../../common/iValidator');
 var errorCode = require('../../common/error-code');
 var errorMessage = require('../../common/error-methods');
-var mail = require('./../../common/mailer.js');
 
 function init(router) {
     router
@@ -24,7 +23,6 @@ function getAllUsers(req, res) {
             res.send(data);
         })
         .catch(err => {
-            mail.mail(err);
             res.send(err);
         });
 }
@@ -43,7 +41,6 @@ function getUserById(req, res) {
             res.send(data);
         })
         .catch(err => {
-            mail.mail(err);
             res.send(err);
         });
 }
@@ -63,7 +60,6 @@ function addUser(req, res) {
             res.json(data);
         })
         .catch(err => {
-            mail.mail(err);
             res.json(err);
         });
 }
@@ -77,7 +73,6 @@ function updateUser(req, res) {
             res.json(data);
         })
         .catch(err => {
-            mail.mail(err);
             res.json(err);
         });
 }
@@ -90,7 +85,6 @@ function deleteUser(req, res) {
             res.json(data);
         })
         .catch(err => {
-            mail.mail(err);
             res.json(err);
         });
 }
