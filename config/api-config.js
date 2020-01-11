@@ -1,21 +1,12 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const mysql = require('mysql');
-const jwt = require('jsonwebtoken');
-//var db = require('./database');
-//var http = require('http');
-// var errorCode = require('../common/error-code');
-// var errorMessage = require('../common/error-methods');
 const pathFile = require('./pathFile');
 const dbfunc = require('./db-function');
 const bodyParser = require('body-parser');
-const UserRoute = require('../app/routes/user.route');
 const AuthenticRoute = require('../app/routes/authentic.route');
 const DashboardRoute = require('../app/routes/dashboard.route');
-const authService = require('../app/services/authentic.service');
 const checkToken = require('./secureRoute');
-const grabToken = require('../common/grabToken');
 
 // set ejs engine;
 app.set('view engine', 'ejs');
@@ -49,7 +40,7 @@ AuthenticRoute.init(authRouter);
 
 // token check for dashboard students or teacher
 var secureApi = express.Router();
-app.use('/secureApi',[checkToken, roleIdCheck], secureApi);
+app.use('/secureApi', checkToken, secureApi);
 DashboardRoute.init(secureApi);
 
 
@@ -62,29 +53,5 @@ var ApiConfig = {
     app: app,
 };
 
-function roleIdCheck(req,res,next) {
-    console.log("hello");
-    next();
-}
 
-// function loginRedirector(req, res, next) {
-//     const token = grabToken(req);
-//     jwt.verify(token, 'my_secret_key', (err, decode) => {
-//         if (err) {
-//             next();
-//         } else {
-            
-//             console.log(req.path)
-//             switch(req.path){
-//                 case "/dashboard/student":
-//                 case "/dashboard/teacher":
-//                     res.redirect(req.path);
-//                     break;
-//                 default:
-//                     next();
-//                     break;
-//             }
-//         }
-//     });
-// }
 module.exports = ApiConfig;

@@ -1,5 +1,4 @@
 const apis = require('./config/api-config');
-const db = require('./config/database');
 
 const PORT = 9890;
 
