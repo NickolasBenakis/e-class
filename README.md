@@ -1,6 +1,6 @@
 # e-class secure application
 
-A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication and easily pluggable code base.
+A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication.
 
 # Story Journey
 
