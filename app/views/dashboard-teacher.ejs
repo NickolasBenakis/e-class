@@ -44,13 +44,22 @@
             margin: 0 auto;
             display: block;
         }
+        .text-green {
+            color: #00d1b2;
+        }
+        .block {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
     <section>
         <main>
-            <h1 class="title card-footer-item">welcome to e-class <%=teacher_name %></h1>
+            <h1 class="title card-footer-item block">welcome to e-class 
+                <span class="text-green"><%=teacher_name %></span>
+            </h1>
+            
             <h3 class="title card-footer-item">Students & Grades</h3>
         </main>
         <main class="form__container container">
@@ -87,7 +96,7 @@
                                     min="0" 
                                     max="10" 
                                     onblur="validateNumber(this)" />
-                                <input type="submit" class="button is-primary" value="Edit" />
+                                <input type="submit" class="button is-primary" value="Add" />
                             </form>
                             <p id="warning-msg-<%= i %>" class="is-hidden">
                                 <small 
