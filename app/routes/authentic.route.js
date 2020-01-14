@@ -35,6 +35,10 @@ const signOut = (req,res) => {
 }
 
 const loginWithAuth = async (req, res) => {
+    if (req && req.cookie ) {
+        req.cookie('token', req.cookie,{ maxAge: Date.now()});
+        req.clearCookie('token');
+    }
     var authenticData = req.body;
 
     //Validating the input entity
