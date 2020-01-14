@@ -11,7 +11,8 @@
         "dev": "nodemon app.js",
         "format": "prettier \"**/*.{js,json}\" --write",
         "lint": "eslint \"**/*.js\"",
-        "debug": "node --nolazy --inspect  app.js"
+        "debug": "node --nolazy --inspect  app.js",
+        "deploy": "git push heroku"
     },
     "dependencies": {
         "ajv": "^5.5.2",
