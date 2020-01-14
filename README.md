@@ -94,3 +94,7 @@ Note: You have to pass `token` for each request as header which youi will get in
 -   Used common error structure format for all type of error throwing in Application.
 -   Includes `documents` folder which contain sql scripts for DB schema creation.
 -   `bcrypt` is used to encrypt your password through salt and hashing technique and which won't store password as plain text in database.
+
+# References
+
+- Unit testing [Jest](https://dev.to/nedsoft/testing-nodejs-express-api-with-jest-and-supertest-1km6)
