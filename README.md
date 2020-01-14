@@ -21,6 +21,23 @@ Furthermore he can update each student's grade.
 
 Both of users can log out or will when the Token expires.
 
+# Users to test
+| username | password |
+| ------ | ------ |
+| unipiTeacher | unipi |
+| unipiTeacher1 | unipi |
+| unipiTeacher2 | unipi |
+| unipiTeacher3 | unipi |
+| unipiTeacher4 | unipi |
+| unipiStudent | unipi |
+| unipiStudent1 | unipi |
+| unipiStudent2 | unipi |
+| unipiStudent3 | unipi |
+| unipiStudent4 | unipi |
+
+
+
+
 # Overview 
 
 This Application has a basic CRUD operation with MySQL, authetication of API endpoint with JWT Token and Validation of request and response of each route. It contained a documentation folder which contain sql-scripts for easy db schema creation. It provides security in all possible layers including ( Prepared Statements, JWT Tokens, bcrypt encryption for secure passwords, secure httpOnly Cookies, Validations accross all layers including frontend-backend-database, proper Redirections, secure api routes).
