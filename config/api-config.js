@@ -37,12 +37,10 @@ var authRouter = express.Router();
 app.use('/api', authRouter);
 AuthenticRoute.init(authRouter);
 
-
 // token check for dashboard students or teacher
 var secureApi = express.Router();
 app.use('/secureApi', checkToken, secureApi);
 DashboardRoute.init(secureApi);
-
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);
@@ -52,6 +50,5 @@ app.use(function(err, req, res, next) {
 var ApiConfig = {
     app: app,
 };
-
 
 module.exports = ApiConfig;

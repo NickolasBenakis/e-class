@@ -19,13 +19,12 @@ function init(router) {
         .post(addGrade);
 }
 
-
 const getAllLessons = async (req, res, next) => {
     const username = decodeToken(req);
 
     try {
         let lessons = await studentService.getAllLessons(username);
-        if (lessons.length){
+        if (lessons.length) {
             lessons = lessons.map(el => {
                 return {
                     name: el.name,
@@ -40,8 +39,8 @@ const getAllLessons = async (req, res, next) => {
         } else {
             res.json({
                 status: 403,
-                message: "Invalid Role Access"
-            })
+                message: 'Invalid Role Access',
+            });
         }
     } catch (error) {
         console.log(error);
@@ -73,8 +72,8 @@ const getAllStudents = async (req, res) => {
         } else {
             res.json({
                 status: 403,
-                message: "Invalid Role Access"
-            })
+                message: 'Invalid Role Access',
+            });
             return;
         }
     } catch (error) {
@@ -85,8 +84,8 @@ const getAllStudents = async (req, res) => {
 const addGrade = async (req, res, next) => {
     const { grade, student_name } = req.body;
 
-    if (grade >10 || grade <0){
-        res.send("wrong grade input! ");
+    if (grade > 10 || grade < 0) {
+        res.send('wrong grade input! ');
         return;
     }
     try {

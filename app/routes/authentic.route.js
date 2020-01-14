@@ -12,31 +12,27 @@ function init(router) {
         .route('/login')
         .get(indexPage)
         .post(loginWithAuth);
-    router
-        .route('/signup').post(signup);
-    router
-        .route('/signOut').post(signOut);
+    router.route('/signup').post(signup);
+    router.route('/signOut').post(signOut);
 }
 
 const indexPage = (req, res) => {
-    res.cookie('token', req.cookie,{ maxAge: Date.now()});
+    res.cookie('token', req.cookie, { maxAge: Date.now() });
     res.clearCookie('token');
     res.render(pathFile('/app/views/login.ejs'), {
         errorCredentials: '',
     });
 };
 
-
-
-const signOut = (req,res) => {
-    res.cookie('token', req.cookie,{ maxAge: Date.now()});
+const signOut = (req, res) => {
+    res.cookie('token', req.cookie, { maxAge: Date.now() });
     res.clearCookie('token');
     res.redirect('/api/login');
-}
+};
 
 const loginWithAuth = async (req, res) => {
-    if (req && req.cookie ) {
-        req.cookie('token', req.cookie,{ maxAge: Date.now()});
+    if (req && req.cookie) {
+        req.cookie('token', req.cookie, { maxAge: Date.now() });
         req.clearCookie('token');
     }
     var authenticData = req.body;
@@ -55,10 +51,9 @@ const loginWithAuth = async (req, res) => {
             res.cookie('token', token, {
                 expires: new Date(Date.now() + 604800000),
                 httpOnly: true,
-                secure: false
+                secure: false,
                 // secure: true // - for secure, https only cookie
             });
-            
 
             switch (roleId) {
                 case 1:
