@@ -3,7 +3,17 @@
 
 # e-class secure application
 
-A simple and structured secure application written in Node with MySQL, equipped with MVC layer model with basic validation of schema and common error handler, authentication. Deployed in Heroku PaaS https://nben-eclass-unipi.herokuapp.com/api/login
+A simple and structured secure application written in Node with MySQL, equipped with MVC layer model focused at security practices with basic validation of schema and common error handler, authentication. Deployed in Heroku PaaS https://nben-eclass-unipi.herokuapp.com/api/login
+
+# Security practices
+* `Credentials` <br/> <br/>
+When admin sign up a user through signup route - `http://localhost:9890/api/signup` ,the user password is being salted and hashed 10 rounds by bcrypt algorithm. The database does not save any plain text password.
+
+* `DATABASE CRUD actions` <br/> <br/>
+There is a proper sanitization in database through prepared statements. 
+
+* `Cookies/Tokens` <br/> <br/>
+When the user logs in with success, then our api generates a JsonWebToken based on user `username`. Token is send to client via cookies with security attributes `http-only`, `secure`. After that the user is being redirected in a `secureApi/` route where there are sub-routes like `secureApi/dashboard/student` or `secureApi/dashboard/teacher`. There is a middleware in the `secureApi` route which checks everytime for the token , if token and role id is not correct then teacher cannot access a student route or vice versa. In addition if an unsigned in user try to access any of the routes server returns a proper error status informing the user of unauthorized access.
 
 # Story Journey
 
